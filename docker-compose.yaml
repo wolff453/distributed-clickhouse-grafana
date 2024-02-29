@@ -1,5 +1,11 @@
 version: "3.9"
 services:
+  grafana:
+    image: grafana/grafana
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana-storage:/var/lib/grafana
   clickhouse01:
     image: clickhouse/clickhouse-server:23.5.2.7-alpine
     hostname: clickhouse01
@@ -88,8 +94,12 @@ services:
       - ./clusters.xml:/etc/clickhouse-server/config.d/clusters.xml
       - ./listen_host.xml:/etc/clickhouse-server/config.d/listen_host.xml
       - ./zookeeper.xml:/etc/clickhouse-server/config.d/zookeeper.xml
+      - ./macros_3.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./keeper_3.xml:/etc/clickhouse-server/config.d/keeper.xml
 
+volumes:
+  grafana-storage:
+  
 networks:
   my-network:
     driver: bridge
